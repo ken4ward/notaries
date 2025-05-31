@@ -1,0 +1,5 @@
+org.springframework.test.context.ContextCustomizerFactory = \
+    com.christdoes.notaris.config.\
+    SqlTestContainersSpringContextCustomizerFactory,com.christdoes.notaris.\
+    config.TestContainersSpringContextCustomizerFactory,com.christdoes.notaris.\
+    config.KafkaTestContainersSpringContextCustomizerFactory

@@ -1,0 +1,32 @@
+{
+  "generator-jhipster": {
+    "applicationIndex": 1,
+    "applicationType": "microservice",
+    "authenticationType": "oauth2",
+    "baseName": "notaries",
+    "buildTool": "maven",
+    "cacheProvider": "hazelcast",
+    "databaseType": "sql",
+    "devDatabaseType": "h2Memory",
+    "enableHibernateCache": true,
+    "enableSwaggerCodegen": true,
+    "enableTranslation": true,
+    "entities": ["UserProfile", "Order"],
+    "jhipsterVersion": "8.11.0",
+    "jwtSecretKey": "OGYyMjUzM2FiMjNhMzc0MGVhZGY3YTljYzkxYmQwOTgxZTEyYTY0NDk4Y2M4Nzg1NWJkZjkzNTM2NWFmYTU5ZTgwMmNkM2Y4Nzc5OGY4ZTE5ZGEwMzljMTVkZjNlNDdhYWZlODc1ZDBjMWRkMGE3NzkwNDhiYjFhOThmYjViYTM=",
+    "languages": ["en", "nl", "fr"],
+    "lastLiquibaseTimestamp": 1748704260000,
+    "messageBroker": "kafka",
+    "nativeLanguage": "en",
+    "packageName": "com.christdoes.notaris",
+    "prodDatabaseType": "postgresql",
+    "reactive": true,
+    "searchEngine": "elasticsearch",
+    "serverPort": "8081",
+    "serviceDiscoveryType": "consul",
+    "skipClient": true,
+    "skipServer": false,
+    "skipUserManagement": true,
+    "testFrameworks": ["cucumber"]
+  }
+}
