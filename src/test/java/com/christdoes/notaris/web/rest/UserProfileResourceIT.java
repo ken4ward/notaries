@@ -1,22 +1,12 @@
 package com.christdoes.notaris.web.rest;
 
-import static com.christdoes.notaris.domain.UserProfileAsserts.*;
-import static com.christdoes.notaris.web.rest.TestUtil.createUpdateProxyForBean;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.hasItem;
-import static org.hamcrest.Matchers.is;
-import static org.springframework.security.test.web.reactive.server.SecurityMockServerConfigurers.csrf;
-
-import com.christdoes.notaris.IntegrationTest;
-import com.christdoes.notaris.domain.UserProfile;
-import com.christdoes.notaris.repository.EntityManager;
-import com.christdoes.notaris.repository.UserProfileRepository;
-import com.christdoes.notaris.service.dto.UserProfileDTO;
-import com.christdoes.notaris.service.mapper.UserProfileMapper;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.UUID;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.is;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,7 +14,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
+import static org.springframework.security.test.web.reactive.server.SecurityMockServerConfigurers.csrf;
 import org.springframework.test.web.reactive.server.WebTestClient;
+
+import com.christdoes.notaris.IntegrationTest;
+import com.christdoes.notaris.domain.UserProfile;
+import static com.christdoes.notaris.domain.UserProfileAsserts.assertUserProfileUpdatableFieldsEquals;
+import com.christdoes.notaris.repository.EntityManager;
+import com.christdoes.notaris.repository.UserProfileRepository;
+import com.christdoes.notaris.service.dto.UserProfileDTO;
+import com.christdoes.notaris.service.mapper.UserProfileMapper;
+import static com.christdoes.notaris.web.rest.TestUtil.createUpdateProxyForBean;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * Integration tests for the {@link UserProfileResource} REST controller.
@@ -43,7 +44,7 @@ class UserProfileResourceIT {
     private static final Integer DEFAULT_AGE = 1;
     private static final Integer UPDATED_AGE = 2;
 
-    private static final Instant DEFAULT_CREATED_AT = Instant.ofEpochMilli(0L);
+    private static final Instant DEFAULT_CREATED_AT = Instant.parse("1970-01-01T00:00:00Z");
     private static final Instant UPDATED_CREATED_AT = Instant.now().truncatedTo(ChronoUnit.MILLIS);
 
     private static final String ENTITY_API_URL = "/api/user-profiles";
@@ -128,7 +129,13 @@ class UserProfileResourceIT {
     @Test
     void createUserProfile() throws Exception {
         long databaseSizeBeforeCreate = getRepositoryCount();
-        userProfile.setId(null);
+        userProfile.setId(null); // Remove ID for creation
+
+        // Ensure all required fields are set
+        if (userProfile.getCreatedAt() == null) {
+            userProfile.setCreatedAt(Instant.now().truncatedTo(ChronoUnit.MILLIS));
+        }
+
         // Create the UserProfile
         UserProfileDTO userProfileDTO = userProfileMapper.toDto(userProfile);
         var returnedUserProfileDTO = webTestClient
